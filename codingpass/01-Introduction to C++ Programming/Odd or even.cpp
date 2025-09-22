@@ -6,5 +6,4 @@ int main()
 	int number;
 	cin >> number;
 	cout << (number % 2 == 0 ? "even\n" : "odd\n");
-
 }
