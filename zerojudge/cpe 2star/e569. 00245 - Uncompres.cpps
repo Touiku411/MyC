@@ -1,0 +1,51 @@
+#include <iostream>
+#include <string>
+#include <vector>
+using namespace std;
+
+int main() {
+    string input;
+    vector<string> list;
+    while (getline(cin, input)) {
+        if (input == "0")break;
+     
+        string token;
+        string out;
+        for (int i = 0; i < input.size(); i++) {
+            char c = input[i];
+            if (isalpha(c)) {
+                token.clear();
+                while (i < input.size() && isalpha(input[i])) {
+                    token.push_back(input[i]);
+                    i++;
+                }
+                i--;
+               
+       
+                list.insert(list.begin(), token);
+                out += token;
+                
+            }
+            else if (isdigit(c)) {
+                token.clear();
+                while (i < input.size() && isdigit(input[i])) {
+                    token.push_back(input[i]);
+                    i++;
+                }
+                i--;
+                int pos = stoi(token);
+                string word = list[pos - 1];
+                out += word;
+
+                list.erase(list.begin() + pos - 1);
+                list.insert(list.begin(), word);
+            }
+            else {
+                out.push_back(c);
+            }
+        }
+
+        cout << out << "\n";
+    }
+    return 0;
+}
