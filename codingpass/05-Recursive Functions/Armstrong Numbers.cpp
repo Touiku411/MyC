@@ -1,14 +1,21 @@
 #include<iostream>
 using namespace std;
 
-// returns the sum of the k-th powers of digits of n,
-// where k is the number of digits of n.
-int sumPowerDigits(int n);
 
+
+int numDigits; // the number of digits of n
 // returns the p-th power of d
-int power(int d, int p);
-
-int numDigits = 0; // the number of digits of n
+int power(int d, int p)
+{
+    if (p == 0)return 1;
+    return d * power(d, p - 1);
+}
+int sumPowerDigits(int n)
+{
+    if (n == 0)return 0;
+    else
+        return power(n % 10, numDigits) + sumPowerDigits(n / 10);
+}
 
 int main()
 {
@@ -30,21 +37,3 @@ int main()
     }
 }
 
-int sumPowerDigits(int n)
-{
-    if (n == 0)return 0;
-    if (n > 0) {
-        int digit = n % 10;
-        return power(digit,numDigits) + sumPowerDigits(n / 10);
-    }
-    else
-        return 0;
-
-}
-
-// returns the p-th power of d
-int power(int d, int p)
-{
-    if (p == 0)return 1;
-    return d * power(d, p - 1);
-}
