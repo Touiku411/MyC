@@ -68,7 +68,7 @@ void division(int dividend[], int divisor[], int quotient[], int remainder[],
             quotient[pow] = xishu ; //商次方
 
             for (int j = 0; j <= divisorDegree; j++) {
-                remainder[j + pow] -= xishu * divisor[j]; //新的除數
+                remainder[j + pow] -= xishu * divisor[j]; //新的被除數
             }
            
         }
