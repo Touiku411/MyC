@@ -28,8 +28,8 @@ int main()
         for (int i = divisorDegree; i >= 0; i--)
             cin >> divisor[i];
 
-        int quotient[arraySize] = { 0 };
-        int remainder[arraySize] = { 0 };
+        int quotient[arraySize] = {};
+        int remainder[arraySize] = {};
         int quotientDegree;
         int remainderDegree;
         division(dividend, divisor, quotient, remainder,
@@ -53,30 +53,33 @@ int main()
 void division(int dividend[], int divisor[], int quotient[], int remainder[],
     int dividendDegree, int divisorDegree, int& quotientDegree, int& remainderDegree)
 {
-
-
-
     for (int i = 0; i <= dividendDegree; i++) {
         remainder[i] = dividend[i];
     }
-    quotientDegree = dividendDegree - divisorDegree;
-  
-        for (int i = dividendDegree; i >= divisorDegree; i--) {
-            if (remainder[i] == 0)continue;
-            int xishu = remainder[i] / divisor[divisorDegree];
-            int pow = i - divisorDegree; //商係數
-            quotient[pow] = xishu ; //商次方
+    remainderDegree = dividendDegree;
+    quotientDegree = remainderDegree - divisorDegree;
 
-            for (int j = 0; j <= divisorDegree; j++) {
-                remainder[j + pow] -= xishu * divisor[j]; //新的被除數
-            }
-           
+    while (remainderDegree >= divisorDegree && remainderDegree > 0) {
+        if (remainder[remainderDegree] == 0) {
+            remainderDegree--;
+            continue;
         }
+        int xishu = remainder[remainderDegree] / divisor[divisorDegree];
+        int power = remainderDegree - divisorDegree;
+
+        quotient[power] = xishu;
+
+        for (int i = divisorDegree; i >= 0; i--) {
+            remainder[i + power] -= xishu * divisor[i];
+        }
+        remainderDegree--;
+    }
     remainderDegree = 0;
     for (int i = dividendDegree; i >= 0; i--) {
-        if (remainder[i] != 0) {
+        if (remainder[i] != 0){
             remainderDegree = i;
             break;
         }
     }
+
 }
