@@ -15,8 +15,6 @@
 - 從最高項開始判斷，如果 i > addendDegree，sum[i] = adder[i]，反之 i < adderDegree，sum[i] = addend[i]，否則相加
 - 最後取sum的最高項
 
-__
-
 # 題目：Polynomial Multiplication 1
 
 
