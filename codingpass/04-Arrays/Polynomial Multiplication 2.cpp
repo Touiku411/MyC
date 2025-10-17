@@ -82,10 +82,6 @@ void multiplication(long long int multiplicandCoef[], long long int multiplicand
             addition(productCoef, productExpon, productSize, tempCoef, tempExpon, tempSize);
         }
     }
-    
-
-
-
 }
 //低.....高
 // addend += adder
