@@ -1,3 +1,24 @@
+# 題目：Polynomial Addition 1
+
+## Sample Input
+2
+3 1 -2 0 -4
+0 4
+3 -1 -2 0 4
+3 1 2 1 -7
+## Sample Output
+3 1 -2 0 0
+1 1 -3
+
+## 解題步驟
+- 計算長度i = max(adddendDegree,adderDegree);
+- 從最高項開始判斷，如果 i > addendDegree，sum[i] = adder[i]，反之 i < adderDegree，sum[i] = addend[i]，否則相加
+- 最後取sum的最高項
+
+
+
+
+
 # 題目：Polynomial Division 1
 
 ## Sample Input
