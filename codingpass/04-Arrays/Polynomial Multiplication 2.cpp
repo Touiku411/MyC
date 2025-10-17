@@ -11,6 +11,9 @@ void multiplication(long long int multiplicandCoef[], long long int multiplicand
 void addition(long long int addendCoef[], long long int addendExpon[], int& addendSize,
     long long int adderCoef[], long long int adderExpon[], int adderSize);
 
+// returns true if and only if the specified polynomial is the zero polynomial
+bool isZero(long long int coefficient[], int size);
+
 // outputs the specified polynomial
 void output(long long int coefficient[], long long int exponent[], int size);
 
@@ -58,84 +61,89 @@ void multiplication(long long int multiplicandCoef[], long long int multiplicand
     long long int multiplierCoef[], long long int multiplierExpon[], int multiplierSize,
     long long int productCoef[], long long int productExpon[], int& productSize)
 {
-    productSize = 0;
-    int cnt = 0;
-    for (int i = 0; i < multiplicandSize; i++) {
-        long long int tempCoef[arraySize] = {};
-        long long int tempExpon[arraySize] = {};
+
+    for (int i = 0; i < multiplierSize; i++) {
+        long long int tempCoef[arraySize * arraySize] = {};
+        long long int tempExpon[arraySize * arraySize] = {};
         int tempSize = 0;
-        for (int j = 0; j < multiplierSize; j++) {
-            tempCoef[tempSize] = multiplicandCoef[i] * multiplierCoef[j];
-            tempExpon[tempSize] = multiplicandExpon[i] + multiplierExpon[j];
+        for (int j = 0; j < multiplicandSize; j++) {
+            tempCoef[tempSize] = multiplierCoef[i] * multiplicandCoef[j];
+            tempExpon[tempSize] = multiplierExpon[i] + multiplicandExpon[j];
             tempSize++;
         }
-        cnt++;
-        //addition
-        if (cnt == 1) {
+        if(isZero(productCoef,productSize)){
             for (int k = 0; k < tempSize; k++) {
                 productCoef[k] = tempCoef[k];
                 productExpon[k] = tempExpon[k];
             }
             productSize = tempSize;
-        } 
+        }
         else {
             addition(productCoef, productExpon, productSize, tempCoef, tempExpon, tempSize);
-        } 
+        }
     }
-  
-}
+    
 
+
+
+}
+//低.....高
 // addend += adder
 void addition(long long int addendCoef[], long long int addendExpon[], int& addendSize,
-    long long int adderCoef[], long long int adderExpon[], int adderSize )
+    long long int adderCoef[], long long int adderExpon[], int adderSize)
 {
     long long int tempCoef[arraySize * arraySize] = {};
     long long int tempExpon[arraySize * arraySize] = {};
-
-    int k = 0;
+    int tempSize = 0;
     int i = 0, j = 0;
-    while (i < addendSize && j < adderSize) {
+    while (i < addendSize && j < adderSize)
+    {
         if (addendExpon[i] < adderExpon[j]) {
-            tempCoef[k] = addendCoef[i];
-            tempExpon[k] = addendExpon[i];
+            tempCoef[tempSize] = addendCoef[i];
+            tempExpon[tempSize] = addendExpon[i];
+            tempSize++;
             i++;
-            k++;
         }
         else if (addendExpon[i] > adderExpon[j]) {
-            tempCoef[k] = adderCoef[j];
-            tempExpon[k] = adderExpon[j];
+            tempCoef[tempSize] = adderCoef[j];
+            tempExpon[tempSize] = adderExpon[j];
+            tempSize++;
             j++;
-            k++;
         }
         else {
-            if (addendCoef[i] + adderCoef[j] != 0) {
-                tempCoef[k] = addendCoef[i] + adderCoef[j];
-                tempExpon[k] = addendExpon[i];
-                k++;
+            long long int Sum = addendCoef[i] + adderCoef[j];
+            if (Sum != 0) {
+                tempCoef[tempSize] = Sum;
+                tempExpon[tempSize] = addendExpon[i];
+                tempSize++;
             }
-            i++;
-            j++;
+            i++, j++;
         }
     }
     while (i < addendSize) {
-        tempCoef[k] = addendCoef[i];
-        tempExpon[k] = addendExpon[i];
-        k++;
+        tempCoef[tempSize] = addendCoef[i];
+        tempExpon[tempSize] = addendExpon[i];
+        tempSize++;
         i++;
     }
     while (j < adderSize) {
-        tempCoef[k] = adderCoef[j];
-        tempExpon[k] = adderExpon[j];
-        k++;
+        tempCoef[tempSize] = adderCoef[j];
+        tempExpon[tempSize] = adderExpon[j];
+        tempSize++;
         j++;
     }
-    addendSize = k;
 
-    for (int i = 0; i < k; i++) {
+    for (int i = 0; i < tempSize; i++) {
         addendCoef[i] = tempCoef[i];
         addendExpon[i] = tempExpon[i];
-    }
+    } 
+    addendSize = tempSize;
+}
 
+// returns true if and only if the specified polynomial is the zero polynomial
+bool isZero(long long int coefficient[], int size)
+{
+    return (size == 1 && coefficient[0] == 0);
 }
 
 // outputs the specified polynomial
