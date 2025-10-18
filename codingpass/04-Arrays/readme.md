@@ -13,7 +13,7 @@
 4  
 1 2 1 -7  
 3 2 1 0  
-##Sample Output
+## Sample Output
 2  
 1 -2  
 3 2  
