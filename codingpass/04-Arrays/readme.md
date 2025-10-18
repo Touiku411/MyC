@@ -36,6 +36,33 @@
   - 若 i 還小於 addendSize 時， sum放入 addend，同 j 。
 - 根據例子最後sum[0]~sum[2]是{4, -2, -1}，因輸出要從最高項，所以 sumSize = k;
 
+# 題目:Polynomial Multiplication 2
+## Sample Input
+2
+3
+1 -2 -4
+3 2 0
+1
+4
+0
+3
+-1 -2 4
+3 2 0
+4
+1 2 1 -7
+3 2 1 0
+## Sample Output
+3
+4 -8 -16
+3 2 0
+7
+-1 -4 -5 9 22 4 -28
+6 5 4 3 2 1 0
+## 解題思路
+multiplicand          -1x^3 - 2x^2  -  4  
+                             ⬉    ⬉   ⬆
+multiplier      1x^3 + 2x^2 +   1x  -  <font color = "red">7</font>    
 
 
-
+## 解題步驟
+- 
