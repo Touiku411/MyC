@@ -1,5 +1,6 @@
 # 題目:Polynomial Addition 2
 ## Sample Input
+```
 2  
 3  
 1 -2 -4  
@@ -13,14 +14,16 @@
 4  
 1 2 1 -7  
 3 2 1 0  
+```
 ## Sample Output
+```
 2  
 1 -2  
 3 2  
 2  
 1 -3  
 1 0  
-
+```
 ## 題目重點
 *此題為反向輸入輸出*
  −x^3 − 2x^2 + 4
@@ -38,6 +41,7 @@
 
 # 題目:Polynomial Multiplication 2
 ## Sample Input
+```
 2  
 3  
 1 -2 -4  
@@ -51,13 +55,16 @@
 4  
 1 2 1 -7  
 3 2 1 0  
+```
 ## Sample Output
+```
 3  
 4 -8 -16  
 3 2 0  
 7  
 -1 -4 -5 9 22 4 -28  
 6 5 4 3 2 1 0  
+```
 ## 解題思路
 ```
 multiplicand -1x^3 - 2x^2         -  4
@@ -70,8 +77,8 @@ multiplier    1x^3 + 2x^2 +   1x  -  7   X
 - **若係數相加為 0 則跳過**
 
 # 題目:Polynomial Division 2
-```
 ## Sample Input
+```
 2
 3
 4 -8 -16
@@ -86,8 +93,8 @@ multiplier    1x^3 + 2x^2 +   1x  -  7   X
 1 2 1 -7
 3 2 1 0
 ```
-```
 ## Sample Output
+```
 3  
 1 -2 -4
 3 2 0
