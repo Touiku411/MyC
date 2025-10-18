@@ -62,7 +62,8 @@
 ```
 multiplicand -1x^3 - 2x^2         -  4
                   ⬉      ⬉          ⬆    
-multiplier    1x^3 + 2x^2 +   1x  -  7 
+multiplier    1x^3 + 2x^2 +   1x  -  7   X
+           _________________________________
 ```
 - 從multiplier最低項開始，乘上multiplicand的每一項，會得到一個新的多項式，根據multiplierSize會得到multiplierSize個多項式
 - 最後將多個多項式相加即可得到答案
