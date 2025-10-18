@@ -59,9 +59,12 @@
 -1 -4 -5 9 22 4 -28  
 6 5 4 3 2 1 0  
 ## 解題思路
-multiplicand `      -1x^3 - 2x^2  -  4`  
-             `             ⬉    ⬉   ⬆`  
-multiplier   `1x^3 + 2x^2 +   1x  -  7`  
+<pre>
+multiplicand -1x^3 - 2x^2         -  4    
+                           ⬉    ⬉   ⬆    
+multiplier    1x^3 + 2x^2 +   1x  -  7   
+</pre>
+ 
 
 
 ## 解題步驟
