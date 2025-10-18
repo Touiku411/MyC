@@ -75,49 +75,39 @@ void division(int dividendCoef[], long long int dividendExpon[], int dividendSiz
     int quotientCoef[], long long int quotientExpon[], int& quotientSize,
     int remainderCoef[], long long int remainderExpon[], int& remainderSize)
 {
-
-
     for (int i = 0; i < dividendSize; i++) {
         remainderCoef[i] = dividendCoef[i];
         remainderExpon[i] = dividendExpon[i];
     }
-    remainderSize = dividendSize;
-
     quotientSize = 0;
-
-
-
     while (remainderSize > 0 && remainderExpon[remainderSize - 1] >= divisorExpon[divisorSize - 1]) {
-        int coef = remainderCoef[remainderSize - 1] / divisorCoef[divisorSize - 1];
-        long long int expon = remainderExpon[remainderSize - 1] - divisorExpon[divisorSize - 1];
+        int xishu = remainderCoef[remainderSize - 1] / divisorCoef[divisorSize - 1];
+        long long int power = remainderExpon[remainderSize - 1] - divisorExpon[divisorSize - 1];
 
-        quotientCoef[quotientSize] = coef;
-        quotientExpon[quotientSize] = expon;
+        quotientCoef[quotientSize] = xishu;
+        quotientExpon[quotientSize] = power;
         quotientSize++;
-
         int tempCoef[arraySize2] = {};
         long long int tempExpon[arraySize2] = {};
         int tempSize = 0;
-
-        for (int i = 0; i < divisorSize; i++) {
-            tempCoef[i] = coef * divisorCoef[i];
-            tempExpon[i] = expon + divisorExpon[i];
+        for (int i = 0; i < divisorSize ; i++) {
+            tempCoef[tempSize] = xishu * divisorCoef[i];
+            tempExpon[tempSize] = power + divisorExpon[i];
             tempSize++;
         }
-        subtraction(remainderCoef, remainderExpon, remainderSize, tempCoef, tempExpon, tempSize);
-       
+        if (equal(remainderCoef, remainderExpon, remainderSize, tempCoef, tempExpon, tempSize)) {
+            remainderSize = 1;
+            remainderCoef[0] = 0;
+            remainderExpon[0] = 0;
+            break;
+        }
+        subtraction(remainderCoef, remainderExpon, remainderSize, tempCoef, tempExpon, tempSize);          
+    }
+    for (int i = 0; i < quotientSize / 2; i++) {
+        swap(quotientCoef[i], quotientCoef[quotientSize - i - 1]);
+        swap(quotientExpon[i], quotientExpon[quotientSize - i - 1]);
     }
 
-    if (remainderSize == 0) {
-        remainderSize = 1;
-        remainderCoef[0] = 0;
-        remainderExpon[0] = 0;
-    }
-
-    for (int i = 0; i < quotientSize / 2; ++i) {
-        swap(quotientCoef[i], quotientCoef[quotientSize - 1 - i]);
-        swap(quotientExpon[i], quotientExpon[quotientSize - 1 - i]);
-    }
 }
 
 // returns true if and only if polynomial1 == polynomial2
@@ -138,31 +128,25 @@ bool equal(int coefficient1[], long long int exponent1[], int size1,
 void subtraction(int minuendCoef[], long long int minuendExpon[], int& minuendSize,
     int subtrahendCoef[], long long int subtrahendExpon[], int subtrahendSize)
 {
-
     int tempCoef[arraySize2] = {};
     long long int tempExpon[arraySize2] = {};
     int tempSize = 0;
 
-
     int i = 0, j = 0;
+
     while (i < minuendSize && j < subtrahendSize) {
         if (minuendExpon[i] < subtrahendExpon[j]) {
-            if (minuendCoef[i] != 0) {
-                tempCoef[tempSize] = minuendCoef[i];
-                tempExpon[tempSize] = minuendExpon[i];
-                tempSize++;
-            }
+            tempCoef[tempSize] = minuendCoef[i];
+            tempExpon[tempSize] = minuendExpon[i];
+            tempSize++;
             i++;
         }
         else if (minuendExpon[i] > subtrahendExpon[j]) {
-            if (-subtrahendCoef[j] != 0) {
-                tempCoef[tempSize] = -subtrahendCoef[j];
-                tempExpon[tempSize] = subtrahendExpon[j];
-                tempSize++;
-            }     
+            tempCoef[tempSize] = -subtrahendCoef[j];
+            tempExpon[tempSize] = subtrahendExpon[j];
+            tempSize++;
             j++;
         }
-      
         else {
             int diff = minuendCoef[i] - subtrahendCoef[j];
             if (diff != 0) {
@@ -174,21 +158,16 @@ void subtraction(int minuendCoef[], long long int minuendExpon[], int& minuendSi
         }
     }
     while (i < minuendSize) {
-        if (minuendCoef[i] != 0) {
-            tempCoef[tempSize] = minuendCoef[i];
-            tempExpon[tempSize] = minuendExpon[i];
-            tempSize++;
-        }
+        tempCoef[tempSize] = minuendCoef[i];
+        tempExpon[tempSize] = minuendExpon[i];
+        tempSize++;
         i++;
     }
     while (j < subtrahendSize) {
-        if (-subtrahendCoef[j] != 0) {
-            tempCoef[tempSize] = -subtrahendCoef[j];
-            tempExpon[tempSize] = subtrahendExpon[j];
-            tempSize++;
-        }
+        tempCoef[tempSize] = -subtrahendCoef[j];
+        tempExpon[tempSize] = subtrahendExpon[j];
+        tempSize++;
         j++;
-
     }
 
     for (int k = 0; k < tempSize; k++) {
@@ -202,7 +181,6 @@ void subtraction(int minuendCoef[], long long int minuendExpon[], int& minuendSi
 // outputs the specified polynomial
 void output(int coefficient[], long long int exponent[], int size)
 {
-
     cout << size << endl;
     cout << coefficient[size - 1];
     for (int i = size - 2; i >= 0; i--)
