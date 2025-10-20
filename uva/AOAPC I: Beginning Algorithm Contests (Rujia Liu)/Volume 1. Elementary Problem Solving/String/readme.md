@@ -41,4 +41,12 @@ ba\_ban\_a boat  bababa boat
 \_baba\_ba boat  beba boat
 be\_ba b\_oat    behind the goat
 ```
+<pre>
+Before              After
+<u>ban</u>ana boat  babana boat
+ba<u>ban</u>a boat  bababa boat
+<u>baba</u>ba boat  beba boat
+be<u>ba b</u>oat    behind the goat
+</pre>
+
 
