@@ -34,10 +34,10 @@ Rule Find  Replace-by
 3.   ana   any
 4.   ba b  hind the g
 ```
-<pre>
+<div style="white-space: pre;">
 Before       After
 <u>ban</u>ana boat  babana boat
 ba<u>ban</u>a boat  bababa boat
 <u>baba</u>ba boat  beba boat
 be<u>ba b</u>oat    behind the goat
-</pre>
+</div>
