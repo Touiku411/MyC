@@ -36,7 +36,7 @@ Rule Find  Replace-by
 ```
 <pre>
 Before       After
-<u>ban<u>ana boat  babana boat
+<u>ban</u>ana boat  babana boat
 babana boat  bababa boat
 bababa boat  beba boat
 beba boat    behind the goat
