@@ -1,12 +1,12 @@
 # 題目: 10361 - Automatic Poetry
 ## 題意
 - 第一行 s1<s2>s3<s4>s5 ，要輸出 s1s2s3s4s5 ，第二行碰到...要輸出s4s3s2s5
-## 解
+## 解:
 - 用find和substr取要的字串部分，設p1~p4存'<''>'位置
 - 用substr取s1~s5
 
 # 題目: 10878 - Decode the tape
-## 題意
+## 題意:
 - 每列| | 中空格代表0，o代表1，每列不含|跟.共有八個字元，每列會得到一個8-bit二進位
 - 將二進位轉為十進位並對照Ascii表將其對應字符輸出
 ## input
@@ -35,18 +35,18 @@ Rule Find  Replace-by
 4.   ba b  hind the g
 ```
 ```
-Before              After
-\_ban\_ana boat  babana boat
-ba\_ban\_a boat  bababa boat
-\_baba\_ba boat  beba boat
-be\_ba b\_oat    behind the goat
+Before       After
+banana boat  babana boat
+babana boat  bababa boat
+bababa boat  beba boat
+beba boat    behind the goat
 ```
-<pre>
-Before              After
-<u>ban</u>ana boat  babana boat
-ba<u>ban</u>a boat  bababa boat
-<u>baba</u>ba boat  beba boat
-be<u>ba b</u>oat    behind the goat
-</pre>
-
+## 目標:
+- 解析一字串，若該字串中找到ban、baba、...就將該部分替換成Replace-by部分 <註>每個測資Rule不相同
+- 每替換完得到一新字串時，比對Rule時須重頭開始搜尋
+## 解:
+- 用vector<pair<string, string>> Rules存Rules
+- 接著遍歷Rules，若字串找到Find，紀錄該位置pos，和Find的len
+- 對字串replace(pos, len, "Replace")
+- 最後輸出字串
 
