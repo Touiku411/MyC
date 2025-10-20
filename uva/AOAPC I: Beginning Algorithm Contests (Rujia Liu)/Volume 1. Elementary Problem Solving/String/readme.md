@@ -37,7 +37,7 @@ Rule Find  Replace-by
 <pre>
 Before       After
 <u>ban</u>ana boat  babana boat
-babana boat  bababa boat
-bababa boat  beba boat
-beba boat    behind the goat
+ba<u>ban</u>a boat  bababa boat
+<u>baba</u>ba boat  beba boat
+be<u>ba b</u>oat    behind the goat
 </pre>
