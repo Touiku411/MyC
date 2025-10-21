@@ -50,3 +50,9 @@ beba boat    behind the goat
 - 對字串replace(pos, len, "Replace")
 - 最後輸出字串
 
+# 題目: 644 - Immediate Decodability
+- 判斷一編碼(二進位)是否存在前綴
+- 思路:
+  - A = 0101, B = 010 , 則 B 為 A 的前綴
+  - 若 B.rfind(A, 0) == 0 || A.rfind(B, 0) == 0 (B 為 A 的前綴 或 A 為 B 的前綴)
+
