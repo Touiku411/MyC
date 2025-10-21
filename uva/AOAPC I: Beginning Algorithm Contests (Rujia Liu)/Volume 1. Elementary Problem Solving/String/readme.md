@@ -56,3 +56,10 @@ beba boat    behind the goat
   - A = 0101, B = 010 , 則 B 為 A 的前綴
   - 若 B.rfind(A, 0) == 0 || A.rfind(B, 0) == 0 (B 為 A 的前綴 或 A 為 B 的前綴)
 
+# 題目: 409 - Excuses, Excuses!
+- 給t1個Keywords，t2句Excuses，回傳字串中出現最多個關鍵詞的字串。
+- Keyword皆為小寫字母，Excuse : 大寫字母視同小寫、關鍵詞可重複。
+## 解:
+- 設一temp = Excuses，將temp 字母轉為小寫，若遇到非字母轉成空格。
+- 用stringstream 解析 temp 並遍歷 Keyword 存取Keyword出現次數(cnt)，存取該字串idx跟cnt。
+- 將cnt == Max 時輸出Excuses[idx]。
