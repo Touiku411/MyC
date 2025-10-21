@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-#include<set>
+#include<vector>
 
 using namespace std;
 
@@ -8,7 +8,7 @@ int main() {
 	ios::sync_with_stdio(false);
 	cin.tie(nullptr);
 	string input;
-	set<string> code;
+	vector<string> code;
 	bool t = true;
 	int cnt = 0;
 	while (cin >> input) {
@@ -28,7 +28,7 @@ int main() {
 				break;
 			}
 		}
-		code.insert(input);
+		code.push_back(input);
 	}
 }
 
