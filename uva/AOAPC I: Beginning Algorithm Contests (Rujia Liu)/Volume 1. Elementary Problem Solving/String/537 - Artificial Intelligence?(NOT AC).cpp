@@ -38,8 +38,8 @@ int main() {
 		double ans = 0;
 		string Concept, Unit;
 		if (P != string::npos && U != string::npos && I == string::npos) {
-			size_t W = line.find('W');
-			size_t V = line.find('V');
+			size_t W = line.find('W',P );
+			size_t V = line.find('V',U );
 			string p = line.substr(P + 2, W - P - 2);//200m || 200
 			string u = line.substr(U + 2, V - U - 2);
 			ans = toValue(p) / toValue(u);
@@ -47,8 +47,8 @@ int main() {
 			Unit = "A";
 		}
 		else if (P != string::npos && U == string::npos && I != string::npos) {
-			size_t W = line.find('W');
-			size_t A = line.find('A');
+			size_t W = line.find('W', P);
+			size_t A = line.find('A', I);
 			string p = line.substr(P + 2, W - P - 2);//200m || 200
 			string i = line.substr(I + 2, A - I - 2);
 			ans = toValue(p) / toValue(i);
@@ -56,8 +56,8 @@ int main() {
 			Unit = "V";
 		}
 		else if (P == string::npos && U != string::npos && I != string::npos) {
-			size_t V = line.find('V');
-			size_t A = line.find('A');
+			size_t V = line.find('V', U);
+			size_t A = line.find('A', I);
 			string u = line.substr(U + 2, V - U - 2);//200m || 200
 			string i = line.substr(I + 2, A - I - 2);
 			ans = toValue(u) * toValue(i);
