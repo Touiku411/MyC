@@ -38,8 +38,8 @@ int main() {
 		double ans = 0;
 		string Concept, Unit;
 		if (P != string::npos && U != string::npos && I == string::npos) {
-			size_t W = line.find('W',P );
-			size_t V = line.find('V',U );
+			size_t W = line.find('W', P);
+			size_t V = line.find('V', U);
 			string p = line.substr(P + 2, W - P - 2);//200m || 200
 			string u = line.substr(U + 2, V - U - 2);
 			ans = toValue(p) / toValue(u);
