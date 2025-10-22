@@ -63,3 +63,6 @@ beba boat    behind the goat
 - 設一temp = Excuses，將temp 字母轉為小寫，若遇到非字母轉成空格。
 - 用stringstream 解析 temp 並遍歷 Keyword 存取Keyword出現次數(cnt)，存取該字串idx跟cnt。
 - 當cnt == Max 時輸出Excuses[idx]。
+
+# 題目： 537 - Artifical intelligence? 
+## 
