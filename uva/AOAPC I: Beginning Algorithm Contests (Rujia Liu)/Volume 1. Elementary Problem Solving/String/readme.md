@@ -65,4 +65,8 @@ beba boat    behind the goat
 - 當cnt == Max 時輸出Excuses[idx]。
 
 # 題目： 537 - Artifical intelligence? 
-## 
+## P = U * I
+- 有三種情況: 給 P、U 求 I ， 給 P 、 I 求 U ， 給 U、I 求 P。
+- 找到字串中 size_t = {P= , U= , I= }， 再根據上面三種情況找到對應 P U I 的單位 { W , V, A } 。
+- 最後再處理遇到單位 m 、 k 、 M ， 分別乘上 1e-3 , 1e3 , 1e6 。
+  
