@@ -107,12 +107,14 @@ void division(HugeInt dividend, HugeInt divisor, HugeInt& quotient, HugeInt& rem
         while (less(Buffer, remainder) || equal(Buffer,remainder)) {
             subtraction(remainder, Buffer);
             quotient.digit[k]++;
-            if (isZero(remainder))
+            if (isZero(remainder)) {
+                delete[] Buffer.digit;
                 return;
+            }
         }
         divideBy10(Buffer);
     }
-
+    delete[] Buffer.digit;
 }
 
 // hugeInt /= 10, or equivalently, shifts right by one position
@@ -136,7 +138,6 @@ void subtraction(HugeInt& minuend, HugeInt subtrahend)
 {
     if (equal(minuend, subtrahend)){
         minuend.size = 1;
-        minuend.digit = new int[1];
         minuend.digit[0] = 0;
         return;
     }
