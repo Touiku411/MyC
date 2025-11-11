@@ -70,3 +70,6 @@ beba boat    behind the goat
 - 找到字串中 size_t = {P= , U= , I= }， 再根據上面三種情況找到對應 P U I 的單位 { W , V, A } 。
 - 最後再處理遇到單位 m 、 k 、 M ， 分別乘上 1e-3 , 1e3 , 1e6 。
   
+# 題目： 10010 - Where's Waldorf?
+- 判斷word是否在grid中(8個方向:左上右下、左上、右上、右下、左下)，方向用dx,dy儲存。
+- 在grid中若與word的第一個字匹配則向8個方向遍歷搜尋
