@@ -4,16 +4,14 @@
 #include<sstream>
 using namespace std;
 
-int dx[] = { -1,-1,0,1,1,1,0,-1 };
-int dy[] = { 0,1,1,1,0,-1,-1,-1 };
-
+int dx[8] = { 0,-1,0,1,-1,-1,1,1 };
+int dy[8] = { -1,0,1,0,-1,1,1,-1 };
 int main()
 {
-
 	int T; cin >> T;
 	while (T--) {
 		int m, n; cin >> m >> n;
-		vector<string> grid(m);	
+		vector<string> grid(m);
 		for (int i = 0; i < m; i++) {
 			cin >> grid[i];
 			for (int j = 0; j < n; j++) {
@@ -28,10 +26,10 @@ int main()
 				word[i][j] = tolower(word[i][j]);
 			}
 		}
-		
+		//遍歷要找的word
 		for (int t = 0; t < k; t++) {
 			string WordToFind = word[t];
-			bool found = false;
+			bool find = false;
 			for (int i = 0; i < m; i++) {
 				for (int j = 0; j < n; j++) {
 					if (grid[i][j] == WordToFind[0]) {
@@ -50,21 +48,21 @@ int main()
 								}
 							}
 							if (match) {
+								find = true;
 								cout << i + 1 << " " << j + 1 << endl;
-								found = true;
 								break;
 							}
 						}
 					}
-					if (found)break;
+					if (find)break;
 				}
-				if (found)break;
+				if (find)break;
 			}
 		}
 		if (T > 0) {
 			cout << endl;
 		}
- 	}
+	}
 } 
 
 
