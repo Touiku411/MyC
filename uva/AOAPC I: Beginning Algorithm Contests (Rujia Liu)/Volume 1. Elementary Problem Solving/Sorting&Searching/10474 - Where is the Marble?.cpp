@@ -21,17 +21,12 @@ int main()
         cout << "CASE# " << cnt++ << ":\n";
         sort(N_vec.begin(), N_vec.end());
         for (int i = 0; i < Q; i++) {
-            bool find = false;
-            for (int j = 0; j < N; j++) {
-                if (Q_vec[i] == N_vec[j]) {
-                    find = true;
-                }
-                if (find) {
-                    cout << Q_vec[i] << " found at " << j + 1 << endl;
-                    break;
-                }
+            auto it = lower_bound(N_vec.begin(), N_vec.end(), Q_vec[i]);
+            if (it != N_vec.end() && *it == Q_vec[i]) {
+                int pos = (it - N_vec.begin()) + 1;
+                cout << Q_vec[i] << " found at " << pos << endl;
             }
-            if (!find) {
+            else {
                 cout << Q_vec[i] << " not found\n";
             }
         }
