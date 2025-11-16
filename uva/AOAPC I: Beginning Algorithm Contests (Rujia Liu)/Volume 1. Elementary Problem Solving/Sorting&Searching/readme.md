@@ -25,13 +25,13 @@ vector<pair<string,int>> vec(map.begin(),map.end());
 ## 輸入兩個數N,Q，N代表要遍歷的數量，Q代表總共有Q個數要搜尋
 ## 解:
 - 下面X為要搜索的值
+- lower_bound會找到第一個 >= 的元素，並回傳iterate指向該索引值。
 ```
-lower_bound(vec.begin(),vec.end(), X)
+lower_bound(vec.begin(),vec.end(), X) // 回傳第一個大於等於iterate
 ```
--lower_bound會找到第一個 >= 的元素，並回傳iterate指向該索引值。
 -upper_bound則會找到第一個 > 的元素，並回傳iterate指向該索引值。
 ```
-upper_bound(vec.begin(),vec.end(), X)
+upper_bound(vec.begin(),vec.end(), X) // 回傳第一個大於iterate
 ```
 - 取得該索引則使用iterate - vec.begin()
 ```
