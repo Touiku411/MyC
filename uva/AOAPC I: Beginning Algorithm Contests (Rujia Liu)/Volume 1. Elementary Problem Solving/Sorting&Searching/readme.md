@@ -13,7 +13,10 @@
 # 題目 : 10420 - List of Conquests
 ## 給N列字串取第一個字並列印出該字串和出現次數
 ## 解:
-- map<string,int> 可以存字串與出現次數，map["str"]++ ， 且會自動排序
+- map<string,int> 可以存字串與出現次數， 且會自動排序。
+```
+map["str"]++
+```
 - unordered_map 也行，但不會自動排序，需轉換成vector再進行排序 --->
 ```
 vector<pair<string,int>> vec(map.begin(),map.end());
