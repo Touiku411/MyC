@@ -15,9 +15,9 @@
 ## 解:
 - map<string,int> 可以存字串與出現次數，map["str"]++ ， 且會自動排序
 - unordered_map 也行，但不會自動排序，需轉換成vector再進行排序 --->
-"""
+```
 vector<pair<string,int>> vec(map.begin(),map.end());
-"""
+```
 # 題目 : 400 - Unix ls
 - ceil(A/B) (無條件進位)
   - (A + B - 1) / B
