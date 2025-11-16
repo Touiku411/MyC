@@ -33,6 +33,12 @@ lower_bound(vec.begin(),vec.end(), X)
 ```
 upper_bound(vec.begin(),vec.end(), X)
 ```
+- 取得該索引則使用iterate - vec.begin()
+```
+auto it = lower_bound(vec.begin(), vec.end(), X);
+int pos = it - vec.begin();//索引
+*it // 指向的元素
+```
 # 題目 : 400 - Unix ls
 - ceil(A/B) (無條件進位)
   - (A + B - 1) / B
