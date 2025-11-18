@@ -55,16 +55,14 @@ void addition(HugeInt addend, HugeInt adder, HugeInt& sum)
 		if (i < adder.size) {
 			sum.digit[i] += adder.digit[i];
 		}
-	}	
+	}
 	for (int i = 0; i < MaxSize; i++) {
 		if (sum.digit[i] > 9) {
 			sum.digit[i] -= 10;
 			sum.digit[i + 1] += 1;
 		}
 	}
-	for (int i = sum.size - 1; i >= 0 ; i--) {
-		if (sum.digit[i] != 0)
-			break;
+	while (sum.size > 1 && sum.digit[sum.size - 1] == 0) {
 		sum.size--;
 	}
 }
