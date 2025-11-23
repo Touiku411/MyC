@@ -4,22 +4,22 @@ using namespace std;
 
 int addition(vector<int> a, vector<int> b) {
 	int carry = 0;
-	int sumSize = (a.size() > b.size()) ? a.size() : b.size();
-	vector<int> sum(sumSize + 1);
-	for (int i = 0; i < a.size(); ++i) {
-		sum[i] = a[i];
-	}
-	for (int i = 0; i < b.size(); ++i) {
-		sum[i] += b[i];
-	}
-	for (int i = 0; i < sum.size() - 1; ++i){
-		if (sum[i] > 9) {
-			sum[i + 1] += 1;
-			sum[i] -= 10;
-			carry++;
+	int count = 0;
+	int i = 0;
+	while (i < a.size() || i < b.size()) {
+		int val1 = (i < a.size()) ? a[i] : 0;
+		int val2 = (i < b.size()) ? b[i] : 0;
+		int sum = val1 + val2 + carry;
+		if (sum > 9) {
+			carry = 1;
+			count++;
 		}
+		else {
+			carry = 0;
+		}
+		i++;
 	}
-	return carry;
+	return count;
 }
 int main() {
 	string input1, input2;
@@ -44,5 +44,5 @@ int main() {
 			cout << carry << " carry operations.\n";
 		}
 	}
-	
+
 }
