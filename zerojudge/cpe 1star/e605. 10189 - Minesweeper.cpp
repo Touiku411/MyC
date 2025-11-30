@@ -13,10 +13,8 @@ int main() {
     int n, m;
     while (cin >> n >> m && n != 0 && m != 0) {
         vector<string> grid(n);
-        string input;
         for (int i = 0; i < n; ++i) {
-            cin >> input;
-            grid[i] = input;
+            cin >> grid[i];
         }
         vector<vector<int>> ans(n, vector<int>(m , 0));
         for (int i = 0; i < n; ++i) {
@@ -35,6 +33,8 @@ int main() {
                 }
             }
         }
+        if(cnt > 1)
+            cout << endl;
         cout << "Field #" << cnt++ << ":\n";
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
@@ -45,7 +45,6 @@ int main() {
             }
             cout << endl;
         }
-        cout << endl;
     }
 }
     
