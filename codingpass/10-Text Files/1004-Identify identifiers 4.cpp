@@ -44,13 +44,19 @@ const string keywords[] = { "auto", "break", "case", "char", "const",
                             "reinterpret_cast", "static_cast", "template",
                             "this", "throw", "true", "try", "typeid",
                             "typename", "using", "virtual", "include" };
+
+void print(vector<string> vec) {
+    for (auto i : vec) {
+        cout << i << endl;
+    }
+}
 int main()
 {
     vector< string > program;
 
     // reads in a C++ program from a cpp file, and put it to the vector program
     load(program);
-    
+
     vector< string > identifiers;
     string null;
 
@@ -64,6 +70,7 @@ int main()
             extractIdentifiers(program[i], identifiers);
         // extracts all identifiers from program[ i ], and put them into the vector identifiers
     }
+    print(program);
     // stores all non-keyword strings in the vector identifiers into a text file
     store(identifiers);
 }
@@ -73,7 +80,7 @@ void load(vector< string >& program)
     string str; cin >> str;
     fstream inFile(str, ios::in);
     string line;
-    while (getline(inFile,line)) {
+    while (getline(inFile, line)) {
         program.push_back(line);
     }
     inFile.close();
@@ -96,6 +103,9 @@ void delStrConsts(string& sourceLine)
     bool find = false;
     size_t pos1;
     for (int i = 0; i < sourceLine.size(); ++i) {
+        if (sourceLine[i] == '"' && sourceLine[i + 1] == '\'' && sourceLine[i - 1] == '\'') {
+            continue;
+        }
         if (sourceLine[i] == '\\') {
             i++; continue;
         }
@@ -108,7 +118,9 @@ void delStrConsts(string& sourceLine)
         }
         if (find && sourceLine[i] == '"') {
             size_t pos2 = i;
-            sourceLine.erase(pos1, pos2 - pos1 + 1);
+            for (int k = pos1; k <= pos2; ++k) {
+                sourceLine[k] = ' ';
+            }
             find = false;
         }
     }
@@ -131,7 +143,9 @@ void delCharConsts(string& sourceLine)
         }
         if (find && sourceLine[i] == '\'') {
             size_t pos2 = i;
-            sourceLine.erase(pos1, pos2 - pos1 + 1);
+            for (int k = pos1; k <= pos2; ++k) {
+                sourceLine[k] = ' ';
+            }
             find = false;
         }
     }
@@ -141,7 +155,7 @@ void extractIdentifiers(string& sourceLine, vector< string >& identifiers)
 {
     string out;
     for (char c : sourceLine) {
-        if (isalnum(c)) {
+        if (isalnum(c) || c == '_') {
             out += c;
         }
         else {
@@ -151,13 +165,17 @@ void extractIdentifiers(string& sourceLine, vector< string >& identifiers)
             }
         }
     }
+    if (!out.empty()) {
+        identifiers.push_back(out);
+        out.clear();
+    }
 }
 
 void store(vector< string >& identifiers)
 {
     ofstream outFile("identifiers.txt", ios::out);
     for (int i = 0; i < identifiers.size(); ++i) {
-        if (!keyword(identifiers[i]) && !duplicate(identifiers, i)) {
+        if (!keyword(identifiers[i]) && !duplicate(identifiers, i) && !isdigit(identifiers[i][0])) {
             outFile << identifiers[i] << endl;
         }
     }
