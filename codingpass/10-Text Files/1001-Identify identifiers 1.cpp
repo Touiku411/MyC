@@ -4,7 +4,7 @@
 using namespace::std;
 
 // reads in a C++ program from a cpp file, and put it to the array program
-void load(char(*program)[100], int& numLines);
+void load(char(*program)[256], int& numLines);
 
 // deletes the comment beginning with "//" from sourceLine if any
 void delComment(char sourceLine[]);
@@ -43,7 +43,15 @@ const char keywords[][20] = { "auto", "break", "case", "char", "const",
                                 "this", "throw", "true", "try", "typeid",
                                 "typename", "using", "virtual", "include" };
 
-void print(char (*program)[100], int numLines) {
+void print(char (*program)[256], int numLines) {
+    for (size_t i = 0; i < numLines; ++i) {
+        for (size_t j = 0; j < strlen(program[i]); ++j) {
+            cout << program[i][j];
+        }
+        cout << endl;
+    }
+}
+void print2(char (*program)[32], int numLines) {
     for (size_t i = 0; i < numLines; ++i) {
         for (size_t j = 0; j < strlen(program[i]); ++j) {
             cout << program[i][j];
@@ -53,7 +61,7 @@ void print(char (*program)[100], int numLines) {
 }
 int main()
 {
-    char (*program)[100] = new char[500][100];
+    char (*program)[256] = new char[500][256];
     int numLines = 0;
 
     // reads in a C++ program from a cpp file, and put it to the array program
@@ -73,23 +81,22 @@ int main()
         // extracts all identifiers from program[ i ], and put them into the array identifiers
     }
     print(program, numLines);
-
+    print2(identifiers, numIdentifiers);
     // stores all non-keyword strings in the array identifiers into a text file
     store(identifiers, numIdentifiers);
     delete[] program;
     delete[] identifiers;
 
 }
-
-void load(char(*program)[100], int& numLines)
+void load(char(*program)[256], int& numLines)
 {
-    ifstream inFile("test1.cpp", ios::in);
+    ifstream inFile("test4.cpp", ios::in);
     if (!inFile.is_open()) {
         cout << "File could not be opened\n";
         //system("pause");
-        exit(1);
+        return;
     }
-    while (inFile.getline(program[numLines], 100)) {
+    while (inFile.getline(program[numLines], 256)) {
         numLines++;
     }
     inFile.close();
@@ -115,7 +122,10 @@ void delStrConsts(char sourceLine[])
     size_t pos1;
     size_t pos2;
     if (length > 1) {
-        for (size_t i = 0; i < length ; ++i) {
+        for (size_t i = 0; i < length; ++i) {
+            if (sourceLine[i] == '"' && sourceLine[i - 1] == '\'' && sourceLine[i + 1] == '\'') {
+                continue;
+            }
             if (findfirst && sourceLine[i] == '\\') {
                 i++;
                 continue;
@@ -193,8 +203,16 @@ void extractIdentifiers(char sourceLine[], char identifiers[][32], int& numIdent
                 identifiers[numIdentifiers][str.length()] = '\0';
                 numIdentifiers++;
                 str.clear();
-            } 
+            }
         }
+    }
+    if (!str.empty()) {
+        for (size_t k = 0; k < str.length(); ++k) {
+            identifiers[numIdentifiers][k] = str[k];
+        }
+        identifiers[numIdentifiers][str.length()] = '\0';
+        numIdentifiers++;
+        str.clear();
     }
 }
 //把非關鍵字的輸出到identifiers.txt
@@ -203,12 +221,11 @@ void store(char (*identifiers)[32], int numIdentifiers)
     ofstream outFile("identifiers.txt", ios::out);
     if (outFile.fail()) {
         cout << "存檔失敗\n";
-     /*   system("pause");*/
-        exit(1);
+        /*   system("pause");*/
+        return;
     }
     for (size_t i = 0; i < numIdentifiers; ++i) {
-        bool Valid = !isdigit(identifiers[i][0]);
-        if (!keyword(identifiers[i]) && !duplicate(identifiers, i) && Valid) {
+        if (!keyword(identifiers[i]) && !duplicate(identifiers, i) && !isdigit(identifiers[i][0])) {
             outFile << identifiers[i] << endl;
         }
     }
