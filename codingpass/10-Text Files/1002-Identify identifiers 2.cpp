@@ -71,19 +71,18 @@ int main()
             extractIdentifiers(program[i], identifiers, numIdentifiers);
         // extracts all identifiers from program[ i ], and put them into the array identifiers
     }
-    
+
     // stores all non-keyword strings in the array identifiers into a text file
     store(identifiers, numIdentifiers);
     print(program, numLines);
-    print(identifiers, numIdentifiers);
     delete[] program;
     delete[] identifiers;
 }
 
 void load(string* program, int& numLines)
-{ 
-    ifstream inFile("test1.cpp", ios::in);
-    
+{
+    ifstream inFile("test5.cpp", ios::in);
+
     if (!inFile.is_open()) {
         cout << "failed\n";
         return;
@@ -113,6 +112,9 @@ void delStrConsts(string& sourceLine)
     size_t pos1;
     size_t pos2;
     for (size_t i = 0; i < sourceLine.size(); ++i) {
+        if (sourceLine[i] == '"' && sourceLine[i - 1] == '\'' && sourceLine[i + 1] == '\'') {
+            continue;
+        }
         if (findfirst && sourceLine[i] == '\\') {
             i++;
             continue;
@@ -121,7 +123,7 @@ void delStrConsts(string& sourceLine)
             if (sourceLine[i] == '"') {
                 pos1 = i;
                 findfirst = true;
-            }   
+            }
             continue;
         }
         if (sourceLine[i] == '"') {
@@ -129,7 +131,9 @@ void delStrConsts(string& sourceLine)
             pos2 = i;
         }
         if (findfirst && findsecond) {
-            sourceLine.erase(sourceLine.begin() + pos1, sourceLine.begin() + pos2 + 1);
+            for (int k = pos1; k <= pos2; ++k) {
+                sourceLine[k] = ' ';
+            }
             findfirst = false;
             findsecond = false;
         }
@@ -159,12 +163,14 @@ void delCharConsts(string& sourceLine)
             pos2 = i;
         }
         if (findfirst && findsecond) {
-            sourceLine.erase(sourceLine.begin() + pos1, sourceLine.begin() + pos2 + 1);
+            for (int k = pos1; k <= pos2; ++k) {
+                sourceLine[k] = ' ';
+            }
             findfirst = false;
             findsecond = false;
         }
     }
-   
+
 }
 
 void extractIdentifiers(string& sourceLine, string* identifiers,
@@ -172,25 +178,30 @@ void extractIdentifiers(string& sourceLine, string* identifiers,
 {
     string str;
     for (size_t i = 0; i < sourceLine.size(); ++i) {
-        if (isalnum(sourceLine[i])) {
+        if (isalnum(sourceLine[i]) || sourceLine[i] == '_') {
             str += sourceLine[i];
         }
         else {
-            if (!str.empty()){
+            if (!str.empty()) {
                 identifiers[numIdentifiers] = str;
                 str.clear();
                 numIdentifiers++;
             }
         }
     }
-
+    if (!str.empty()) {
+        identifiers[numIdentifiers] = str;
+        str.clear();
+        numIdentifiers++;
+    }
 }
 
 void store(string* identifiers, int numIdentifiers)
 {
     ofstream outFile("identifiers.txt", ios::out);
     for (size_t i = 0; i < numIdentifiers; ++i) {
-        if (!keyword(identifiers[i]) && !duplicate(identifiers, i)) {
+
+        if (!keyword(identifiers[i]) && !duplicate(identifiers, i) && !isdigit(identifiers[i][0])) {
             outFile << identifiers[i] << endl;
         }
     }
