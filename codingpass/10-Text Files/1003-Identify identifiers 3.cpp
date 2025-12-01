@@ -80,7 +80,7 @@ int main()
 
 void load(vector< char* >& program)
 {
-    ifstream inFile("test1.cpp", ios::in);
+    ifstream inFile("test5.cpp", ios::in);
     if (!inFile) {
         cout << "File could not be opened!\n";
         return;
@@ -89,7 +89,7 @@ void load(vector< char* >& program)
     while (inFile.getline(Buffer, 1000)) {
         int len = strlen(Buffer);
         char* line = new char[len + 1];
-      /*  strcpy_s(line,len + 1, Buffer);*/
+        /*  strcpy_s(line,len + 1, Buffer);*/
         strcpy(line, Buffer);
         program.push_back(line);
     }
@@ -114,6 +114,9 @@ void delStrConsts(char* sourceLine)
     bool instr = false;
     size_t pos;
     for (size_t i = 0; i < length; ++i) {
+        if (sourceLine[i] == '"' && sourceLine[i - 1] == '\'' && sourceLine[i + 1] == '\'') {
+            continue;
+        }
         if (sourceLine[i] == '\\') {
             i++; continue;
         }
@@ -163,7 +166,7 @@ void extractIdentifiers(char* sourceLine, vector< char* >& identifiers)
     char Buffer[100] = {};
     int k = 0;
     for (size_t i = 0; i < strlen(sourceLine); ++i) {
-        if (isalnum(sourceLine[i])) {
+        if (isalnum(sourceLine[i]) || sourceLine[i] == '_') {
             Buffer[k++] = sourceLine[i];
         }
         else {
@@ -178,13 +181,22 @@ void extractIdentifiers(char* sourceLine, vector< char* >& identifiers)
             }
         }
     }
+    if (/*Buffer[0] != '\0'*/ strlen(Buffer)) {
+        Buffer[k] = '\0';
+        int len = strlen(Buffer);
+        char* line = new char[len + 1];
+        strcpy(line, Buffer);
+        identifiers.push_back(line);
+        memset(Buffer, 0, sizeof(Buffer));
+        k = 0;
+    }
 }
 
 void store(vector< char* >& identifiers)
 {
     ofstream outFile("identifiers.txt", ios::out);
     for (size_t i = 0; i < identifiers.size(); ++i) {
-        if (!keyword(identifiers[i]) && !duplicate(identifiers, i)) {
+        if (!keyword(identifiers[i]) && !duplicate(identifiers, i) && !isdigit(identifiers[i][0])) {
             outFile << identifiers[i] << endl;
         }
     }
