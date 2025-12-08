@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void nums(int& even, int& odd, vector<int> vec){
+void nums(int& even, int& odd, vector<int>& vec){
     for(int i : vec){
         if(i % 2 == 0)
             even++;
@@ -14,7 +14,7 @@ void nums(int& even, int& odd, vector<int> vec){
             odd++;
     }
 }
-void oddpos(vector<int> vec, int& n){
+void oddpos(vector<int>& vec, int& n){
     for(int i = 0;i< vec.size();++i){
         if(vec[i] % 2 != 0){
             n = i;
@@ -22,7 +22,7 @@ void oddpos(vector<int> vec, int& n){
         }
     }
 }
-void evenpos(vector<int> vec, int& n){
+void evenpos(vector<int>& vec, int& n){
     for(int i = 0;i< vec.size();++i){
         if(vec[i] % 2 == 0){
             n = i;
