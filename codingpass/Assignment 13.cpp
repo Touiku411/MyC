@@ -2,7 +2,6 @@
 #include <iomanip>
 #include <fstream>
 #include <ctime>
-#include <string>
 using namespace std;
 
 struct Date
@@ -244,52 +243,68 @@ void booking()
     displayFlights(flights, numFlights, flightSeats, numFlightSeats,
         departureAirport, arrivalAirport, reservation.date);
 
-    // choose a flight by input its number, and assign the number to reservation.flightNo
-    chooseFlight(reservation, flights, numFlights);
+// choose a flight by input its number, and assign the number to reservation.flightNo
+chooseFlight(reservation, flights, numFlights);
 
-    // input the number of tickets for each ticket type,
-    // and assign them to reservation.tickets
-    inputNumTickets(reservation, flightSeats, numFlightSeats);
+// input the number of tickets for each ticket type,
+// and assign them to reservation.tickets
+inputNumTickets(reservation, flightSeats, numFlightSeats);
 
-    int totalNumTickets = 0;
-    for (int i = 1; i < 8; i++)
-        totalNumTickets += reservation.tickets[i];
+int totalNumTickets = 0;
+for (int i = 1; i < 8; i++)
+    totalNumTickets += reservation.tickets[i];
 
-    if (totalNumTickets > 0)
-        modifyFlightSeatsFile(reservation, totalNumTickets);
-    else
-    {
-        cout << "Your booking could not be completed!\n";
-        return;
-    }
+if (totalNumTickets > 0)
+modifyFlightSeatsFile(reservation, totalNumTickets);
+else
+{
+    cout << "Your booking could not be completed!\n";
+    return;
+}
 
-    displayReservation(reservation, flights, numFlights);
+displayReservation(reservation, flights, numFlights);
 
-    cout << "\nID number: ";
-    cin >> reservation.id;
-    cout << "\nName: ";
-    cin >> reservation.name;
-    cout << "\nMobile: ";
-    cin >> reservation.mobile;
+cout << "\nID number: ";
+cin >> reservation.id;
+cout << "\nName: ";
+cin >> reservation.name;
+cout << "\nMobile: ";
+cin >> reservation.mobile;
 
-    // append reservation to the end of Reservations.dat
-    saveReservation(reservation);
+// append reservation to the end of Reservations.dat
+saveReservation(reservation);
 
-    cout << "\nBooking completed!\n";
+cout << "\nBooking completed!\n";
 }
 
 // choose arrival airport by input its code, and assign the code to arrivalAirport
 void chooseArrivalAirport(int departureAirport, int& arrivalAirport)
 {
-    cout << endl << "Arrival airport:\n";
-    for (int i = 1; i < 12; ++i) {
+    int Array[50];
+    int ArraySize = 0;
+    for (int i = 1; i <= 12; ++i) {
         if (fullFare[departureAirport][i] != 0) {
-            cout << right << setw(2) << i << ". " << airportName[i] << endl;
+            ArraySize++;
+            Array[ArraySize] = i;
         }
     }
-    cout << "? ";
-    cin >> arrivalAirport;
-
+    int choice;
+    bool isValid = false;
+    do {
+        cout << "\nArrival airport:\n";
+        for (int i = 1; i <= ArraySize; ++i) {
+            cout << setw(2) << right << Array[i] << ". " << airportName[Array[i]] << endl;
+        }
+        cout << "? ";
+        cin >> choice;
+        for (int i = 1; i <= ArraySize; ++i) {
+            if (Array[i] == choice) {
+                isValid = true;
+                break;
+            }
+        }
+    } while (!isValid);
+    arrivalAirport = choice;
 }
 
 void inputDepartureDate(char date[], int& departureDayWeek)
@@ -302,68 +317,91 @@ void inputDepartureDate(char date[], int& departureDayWeek)
     int month = structuredTime.tm_mon + 1;
     int day = structuredTime.tm_mday;
 
-    int curYear = year;
-    int curMonth = month;
-    int curDay = day;
-    Date Date[7];
-    cout << endl << "Departure Date (Month):\n";
-    for (int i = 1; i <= 6; ++i) {
-        cout << i << ". " << curYear << "-" << curMonth << endl;
-        Date[i].day = curDay;
-        Date[i].month = curMonth;
-        Date[i].year = curYear;
-        if (curMonth == 12) {
-            curMonth = 1;
-            curYear++;
+    int selectDate;
+    Date Dates[7];
+    Date d = { year,month,day };
+    do {
+        d.year = year; d.month = month; d.day = day;
+        cout << "\nDeparture Date (Month):\n";
+        for (int i = 1; i <= 6; ++i) {
+            Dates[i] = d;
+            cout << i << ". " << d.year << "-" << d.month << endl;
+            if (d.month == 12) {
+                d.year++;
+                d.month = 1;
+            }
+            else {
+                d.month++;
+            }
+        }
+        cout << "? ";
+        cin >> selectDate;
+    } while (selectDate < 1 || selectDate > 6);
+    cout << endl;
+    int choiceDay;
+    int diff;
+    Date curD = { year,month,day };
+    int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    int minDay = 0;
+    int maxDay = 0;
+    do {
+        if (leapYear(Dates[selectDate].year) && Dates[selectDate].month == 2) {
+            daysInMonth[2] = 29;
         }
         else {
-            curMonth++;
+            daysInMonth[2] = 28;
         }
-    }
-    cout << "? ";
-    int chooseNum;
-    cin >> chooseNum;
-    int chooseDay;
-    cout << endl << "Day (15 ~ 31):";
-    cin >> chooseDay;
-    cout << endl;
-    int y = Date[chooseNum].year; //2025
-    int m = Date[chooseNum].month; // 12
-    int d = Date[chooseNum].day = chooseDay;//15
-    sprintf_s(date, 12, "%d/%02d/%02d", y, m, d);
+        maxDay = daysInMonth[Dates[selectDate].month];
+        if(Dates[selectDate].year == curD.year && Dates[selectDate].month == curD.month){
+            minDay = curD.day;
+        }
+        else {
+            minDay = 1;
+        }
+        cout << "\nDay (" << minDay << " ~ " << maxDay << "): ";
+        cin >> choiceDay;
+        Dates[selectDate].day = choiceDay;
+        diff = difference(Dates[selectDate], curD);
+    } while (choiceDay < minDay || choiceDay > maxDay || diff < 0);
+    //snprintf
+    sprintf_s(date, 12, "%d/%02d/%02d", Dates[selectDate].year, Dates[selectDate].month, choiceDay);
 
     tm time_in = { 0 };
-    time_in.tm_year = y - 1900;
-    time_in.tm_mon = m - 1;
-    time_in.tm_mday = d;
+    time_in.tm_year = Dates[selectDate].year - 1900;
+    time_in.tm_mon = Dates[selectDate].month - 1;
+    time_in.tm_mday = choiceDay;
     mktime(&time_in);
     departureDayWeek = time_in.tm_wday;
 }
 
 int difference(Date departureDate, Date currentDate)
 {
-    const int daysInMonth[] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
-    int depTotal = 0;
-    int curTotal = 0;
-    for (int y = 1; y < departureDate.year; ++y) {
-        depTotal += leapYear(y) ? 366 : 365;
+    int totalDep = 0;
+    int totalCur = 0;
+    const int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    for (int i = 1; i < departureDate.year; ++i) {
+        totalDep += (leapYear(i)) ? 366 : 365;
     }
-    for (int m = 1; m < departureDate.month; ++m) {
-        if (m == 2 && leapYear(departureDate.year))depTotal += 29;
-        else depTotal += daysInMonth[m];
+    for (int i = 1; i < departureDate.month; ++i) {
+        if (i == 2 && leapYear(departureDate.year))
+            totalDep += 29;
+        else 
+            totalDep += daysInMonth[i];
     }
-    depTotal += departureDate.day;
+    totalDep += departureDate.day;
 
-    for (int y = 1; y < currentDate.year; ++y) {
-        curTotal += leapYear(y) ? 366 : 365;
+    for (int i = 1; i < currentDate.year; ++i) {
+        totalCur += (leapYear(i)) ? 366 : 365;
     }
-    for (int m = 1; m < currentDate.month; ++m) {
-        if (m == 2 && leapYear(currentDate.year))curTotal += 29;
-        else curTotal += daysInMonth[m];
+    for (int i = 1; i < currentDate.month; ++i) {
+        if (i == 2 && leapYear(currentDate.year))
+            totalCur += 29;
+        else
+            totalCur += daysInMonth[i];
     }
-    curTotal += currentDate.day;
+    totalCur += currentDate.day;
 
-    return depTotal - curTotal;
+    return totalDep - totalCur;
 }
 
 bool leapYear(int year)
@@ -375,13 +413,15 @@ bool leapYear(int year)
 void loadFlightSchedules(Flight flights[], int& numFlights)
 {
     ifstream inFile("Flight Schedule.dat", ios::binary);
-    if (!inFile)
+    if (!inFile) {
+        cout << "\ncan not read Flight Schedule.dat!\n";
         return;
-    Flight temp;
+    }
     numFlights = 0;
-    while (inFile.read(reinterpret_cast<char*>(&temp), sizeof(Flight))) {
+    Flight f;
+    while (inFile.read(reinterpret_cast<char*>(&f), sizeof(Flight))) {
         numFlights++;
-        flights[numFlights] = temp;
+        flights[numFlights] = f;
     }
     inFile.close();
 }
@@ -391,34 +431,38 @@ void loadFlightSchedules(Flight flights[], int& numFlights)
 void loadFlightSchedules(Flight flights[], int& numFlights,
     int departureAirport, int arrivalAirport, int departureDayWeek)
 {
-    Flight temp[2000];
-    int numTemp = 0;
-    loadFlightSchedules(temp, numTemp);
-    for (int i = 1; i <= numTemp; ++i) {
-        if (temp[i].departureAirport == departureAirport &&
-            temp[i].arrivalAirport == arrivalAirport &&
-            temp[i].dayWeek[departureDayWeek] == 1) {
+    Flight flight[200];
+    int flightSize = 0;
+    loadFlightSchedules(flight, flightSize);
+    for (int i = 1; i <= flightSize; ++i) {
+        if (flight[i].departureAirport == departureAirport &&
+            flight[i].arrivalAirport == arrivalAirport &&
+            flight[i].dayWeek[departureDayWeek] != 0) {
             numFlights++;
-            flights[numFlights] = temp[i];
+            flights[numFlights] = flight[i];
         }
     }
+
 }
 
 void loadFlightSeats(FlightSeats flightSeats[], int& numFlightSeats, char departureDate[],
     int departureAirport, int arrivalAirport)
 {
-    ifstream File("Flight Seats.dat", ios::binary | ios::in);
-    if (!File)return;
+    ifstream inFile("Flight Seats.dat", ios::binary);
+    if (!inFile) {
+        cout << "\ncan not open Flight Seats.dat!\n";
+        return;
+    }
     FlightSeats fs;
-    while (File.read(reinterpret_cast<char*>(&fs), sizeof(FlightSeats))) {
-        if (strcmp(fs.date, departureDate) == 0 &&
-            fs.departureAirport == departureAirport &&
-            fs.arrivalAirport == arrivalAirport) {
+    while (inFile.read(reinterpret_cast<char*>(&fs), sizeof(FlightSeats))) {
+        if (fs.departureAirport == departureAirport &&
+            fs.arrivalAirport == arrivalAirport &&
+            strcmp(fs.date, departureDate) == 0) {
             numFlightSeats++;
             flightSeats[numFlightSeats] = fs;
         }
     }
-    File.close();
+    inFile.close();
 }
 
 // display all flights from departureAirport to arrivalAirport
@@ -428,28 +472,33 @@ void displayFlights(const Flight flights[], int numFlights,
 {
     cout << airportName[departureAirport] << " to " << airportName[arrivalAirport]
         << " / Depart date: " << date << ".\n\n";
-    cout << "Flight   Departure   Arrival   Fare   No. Available Seats\n";
+        cout << "Flight   Departure   Arrival   Fare   No. Available Seats\n";
 
-    for (int i = 1; i <= numFlights; i++)
-        if (flightSeats[i].availableSeats > 0)
-            cout << setw(6) << flights[i].flightNo
-            << setw(12) << flights[i].departureTime
-            << setw(10) << flights[i].arrivalTime
-            << setw(7) << fullFare[departureAirport][arrivalAirport]
+        for (int i = 1; i <= numFlights; i++)
+            if (flightSeats[i].availableSeats > 0)
+                cout << setw(6) << flights[i].flightNo
+                << setw(12) << flights[i].departureTime
+                << setw(10) << flights[i].arrivalTime
+                << setw(7) << fullFare[departureAirport][arrivalAirport]
             << setw(22) << flightSeats[i].availableSeats << endl;
 }
 
 // choose a flight by input its number, and assign the number to reservation.flightNo
 void chooseFlight(Reservation& reservation, const Flight flights[], int numFlights)
 {
-    char chooseFlightNumber[8];
-    cout << endl << "Flight number: ";
-    cin >> chooseFlightNumber;
-    for (int i = 1; i <= numFlights; ++i) {
-        if (strcmp(flights[i].flightNo, chooseFlightNumber) == 0) {
-            strcpy_s(reservation.flightNo, chooseFlightNumber);
+    char selectfNo[8];
+    bool isValid = false;
+    do {
+        cout << "\nFlight number: ";
+        cin >> selectfNo;
+        for (int i = 1; i <= numFlights; ++i) {
+            if (strcmp(flights[i].flightNo, selectfNo) == 0) {
+                isValid = true;
+                break;
+            }
         }
-    }
+    } while (!isValid);
+    strcpy_s(reservation.flightNo, 8, selectfNo);
 }
 
 // input the number of tickets for each ticket type, and assign them to reservation.tickets
@@ -516,17 +565,18 @@ void modifyFlightSeatsFile(Reservation& reservation, int totalNumTickets)
 {
     fstream File("Flight Seats.dat", ios::binary | ios::in | ios::out);
     if (!File) {
+        cout << "\ncan not modify Flight Seats.dat!\n";
         return;
     }
     FlightSeats fs;
     while (File.read(reinterpret_cast<char*>(&fs), sizeof(FlightSeats))) {
-        if (strcmp(reservation.flightNo, fs.flightNo) == 0 &&
-            strcmp(reservation.date, fs.date) == 0) {
+        if (strcmp(fs.date, reservation.date) == 0 &&
+            strcmp(fs.flightNo, reservation.flightNo) == 0) {
+            File.seekp(-static_cast<int>(sizeof(FlightSeats)), ios::cur);
             fs.availableSeats -= totalNumTickets;
+            File.write(reinterpret_cast<char*>(&fs), sizeof(FlightSeats));
+            break;
         }
-        File.seekp(-static_cast<int>(sizeof(FlightSeats)), ios::cur);
-        File.write(reinterpret_cast<char*>(&fs), sizeof(FlightSeats));
-        break;
     }
     File.close();
 }
@@ -573,36 +623,35 @@ void displayReservation(const Reservation reservation,
 // append reservation to the end of Reservations.dat
 void saveReservation(const Reservation reservation)
 {
-    fstream File("Reservations.dat", ios::binary | ios::out | ios::app);
-    if (!File) {
-        cout << "Reservations.dat錯誤\n";
+    ofstream outFile("Reservations.dat", ios::binary | ios::app);
+    if (!outFile) {
+        cout << "\ncan not save Reservations.dat!\n";
         return;
     }
-    File.write(reinterpret_cast<const char*>(&reservation), sizeof(Reservation));
-    File.close();
+    outFile.write(reinterpret_cast<const char*>(&reservation), sizeof(Reservation));
 }
 
 // perform booking inquiry
 bool bookingInquiry(const char id[])
 {
-    //displayReservation()
-    Flight flight[200];
-    int numFlight = 0;
-    Reservation res[maxNumReservations];
-    int numRes = 0;
-    loadFlightSchedules(flight, numFlight);
-    loadReservations(res, numRes);
     bool found = false;
+
+    Reservation res[1000];
+    int resSize = 0;
+    Flight flight[200];
+    int flightSize = 0;
+    loadFlightSchedules(flight, flightSize);
+    loadReservations(res, resSize);
     int cnt = 1;
-    for (int i = 1; i <= numRes; ++i) {
-        if (strcmp(res[i].id, id) == 0){
+    for (int i = 1; i <= resSize; ++i) {
+        if (strcmp(res[i].id, id) == 0) {
+            cout << endl << cnt++ << ". ";
+            displayReservation(res[i], flight, flightSize);
             found = true;
-            cout << cnt++ << ". ";
-            displayReservation(res[i], flight, numFlight);
         }
     }
     if (!found) {
-        cout << "\nNo reservation!\n";
+        cout << "\nNo reservations!\n";
     }
     return found;
 }
@@ -625,35 +674,36 @@ void refundApplication()
     Reservation reservations[maxNumReservations];
     int numReservations;
     loadReservations(reservations, numReservations);
-    
-    int foundCount = 0;
-    int targetIndex = -1;
+
+    int realidx = -1;
+    int idx = 0;
     for (int i = 1; i <= numReservations; ++i) {
         if (strcmp(reservations[i].id, id) == 0) {
-            foundCount++;
-            if (foundCount == choice) {
-                targetIndex = i;
+            idx++;
+            if (idx == choice) {
+                realidx = i;
                 break;
             }
         }
     }
-
-    if (targetIndex == -1) {
-        cout << "inValid\n";
+    int numTotalTicket = 0;
+    if (realidx == -1) {
+        cout << "\nreservation not found\n";
         return;
     }
-    int totalNumTickets = 0;
     for (int i = 1; i <= 7; ++i) {
-        totalNumTickets += reservations[targetIndex].tickets[i];
+        numTotalTicket += reservations[realidx].tickets[i];
     }
-    modifyFlightSeatsFile(reservations[targetIndex], -totalNumTickets);
+    modifyFlightSeatsFile(reservations[realidx], -numTotalTicket);
+
     ofstream outFile("Reservations.dat", ios::binary);
     for (int i = 1; i <= numReservations; ++i) {
-        if (i != targetIndex) {
+        if (i != realidx) {
             outFile.write(reinterpret_cast<char*>(&reservations[i]), sizeof(Reservation));
         }
     }
     outFile.close();
+
     cout << "\nThe seleted booking has been deleted.\n";
 }
 
@@ -661,11 +711,15 @@ void refundApplication()
 void loadReservations(Reservation reservations[], int& numReservations)
 {
     ifstream inFile("Reservations.dat", ios::binary);
-    Reservation rs;
+    if (!inFile) {
+        cout << "\nCan not load Reservations.dat!\n";
+        return;
+    }
     numReservations = 0;
-    while (inFile.read(reinterpret_cast<char*>(&rs), sizeof(Reservation))) {
+    Reservation res;
+    while (inFile.read(reinterpret_cast<char*>(&res), sizeof(Reservation))) {
         numReservations++;
-        reservations[numReservations] = rs;
+        reservations[numReservations] = res;
     }
     inFile.close();
 }
