@@ -422,11 +422,12 @@ void buyTickets(BookingInfo bookingHistories[], int& numBookings, Movie movies[]
     display(movies, bookingHistories[numBookings]);
 
     selectSeats(bookingHistories, numBookings, movies);
-    saveBookingHistories(bookingHistories, numBookings);
+    
     saveMovies(movies, numMovies);
     cout << "\nSuccessful!\n";
     cin.ignore();
     numBookings++;
+    saveBookingHistories(bookingHistories, numBookings);
 }
 
 void selectSeats(BookingInfo bookingHistories[], int numBookings, Movie movies[])
