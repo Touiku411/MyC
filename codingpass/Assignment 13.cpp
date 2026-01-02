@@ -376,32 +376,45 @@ void inputDepartureDate(char date[], int& departureDayWeek)
 
 int difference(Date departureDate, Date currentDate)
 {
-    int totalDep = 0;
-    int totalCur = 0;
-    const int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-    for (int i = 1; i < departureDate.year; ++i) {
-        totalDep += (leapYear(i)) ? 366 : 365;
-    }
-    for (int i = 1; i < departureDate.month; ++i) {
-        if (i == 2 && leapYear(departureDate.year))
-            totalDep += 29;
-        else 
-            totalDep += daysInMonth[i];
-    }
-    totalDep += departureDate.day;
+     tm date1 = { 0 };
+     tm date2 = { 0 };
+     date1.tm_year = departureDate.year - 1900;
+     date1.tm_mon = departureDate.month - 1;
+     date1.tm_mday = departureDate.day;
+     date2.tm_year = currentDate.year - 1900;
+     date2.tm_mon = currentDate.month - 1;
+     date2.tm_mday = currentDate.day;
+     time_t d1 = mktime(&date1);
+     time_t d2 = mktime(&date2);
+     double diff = difftime(d1, d2);
+     return static_cast<int>(diff / (24 * 60 * 60));
 
-    for (int i = 1; i < currentDate.year; ++i) {
-        totalCur += (leapYear(i)) ? 366 : 365;
-    }
-    for (int i = 1; i < currentDate.month; ++i) {
-        if (i == 2 && leapYear(currentDate.year))
-            totalCur += 29;
-        else
-            totalCur += daysInMonth[i];
-    }
-    totalCur += currentDate.day;
+    // int totalDep = 0;
+    // int totalCur = 0;
+    // const int daysInMonth[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    // for (int i = 1; i < departureDate.year; ++i) {
+    //     totalDep += (leapYear(i)) ? 366 : 365;
+    // }
+    // for (int i = 1; i < departureDate.month; ++i) {
+    //     if (i == 2 && leapYear(departureDate.year))
+    //         totalDep += 29;
+    //     else 
+    //         totalDep += daysInMonth[i];
+    // }
+    // totalDep += departureDate.day;
 
-    return totalDep - totalCur;
+    // for (int i = 1; i < currentDate.year; ++i) {
+    //     totalCur += (leapYear(i)) ? 366 : 365;
+    // }
+    // for (int i = 1; i < currentDate.month; ++i) {
+    //     if (i == 2 && leapYear(currentDate.year))
+    //         totalCur += 29;
+    //     else
+    //         totalCur += daysInMonth[i];
+    // }
+    // totalCur += currentDate.day;
+
+    // return totalDep - totalCur;
 }
 
 bool leapYear(int year)
