@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+//cout << n + (n / 2) << endl;就是答案
 int main() {
     int n;
     while (cin >> n) {
