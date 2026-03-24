@@ -28,3 +28,60 @@ int main() {
     }
 }
 
+
+//不用mutiset解法
+//highest,lowest可選
+#include <iostream>
+#include <string>
+#include <vector>
+//#include <algorithm>
+using namespace std;
+vector<int> vec(1000001);
+int highest = 1000001;
+int lowest = 0;
+int findmax(){
+    for(int i = highest ; i >= 0;--i){
+        if(vec[i] > 0){
+            vec[i]--;
+            highest = i;
+            return i;
+        }
+    }
+    return -1;
+}
+int findmin(){
+     for(int i = lowest; i < 1000001; ++i){
+        if(vec[i] > 0){
+            vec[i]--;
+            lowest = i;
+            return i;
+        }
+    }
+    return -1;
+}
+int main() {
+    int T;
+    while(cin >> T && T != 0){
+        long long ans = 0;
+        highest = 0;
+        lowest = 0;
+        while(T--){   
+            int n; cin >>n;
+            for(int i =0;i<n;++i){
+                int x;cin>>x;
+                vec[x]++;
+                if( x > highest) highest = x;
+                if( x < lowest) lowest = x;
+            }     
+            int  max = findmax();
+            int  min = findmin();
+            ans += max - min;
+        }
+        for(int i = 0; i<=1000000;++i){
+            vec[i] = 0;
+        }
+        cout << ans << endl;
+    }
+}
+
+
