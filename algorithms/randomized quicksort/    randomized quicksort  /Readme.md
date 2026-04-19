@@ -3,7 +3,7 @@
 
 # step:
 ## 先將pivot與sub array最後位置交換以方便計算
-### 兩變數 i = left, j = left
+## 兩變數 i = left, j = left
 ## j 負責向前搜尋 array[j] 是否小於pivot
 ## i 負責紀錄位置與 j 位置交換
 ```
